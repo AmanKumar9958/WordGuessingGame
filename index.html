@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Guessing Game</title>
+    <link rel="shortcut icon" href="favicon.webp" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .main {
+            width: 100vw;
+            height: 100vh;
+            background-color: lightblue;
+        }
+        .box {
+            width: 40%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -70%);
+            position: absolute;
+            background-color: lightgreen;
+            border: 2px solid black;
+            border-radius: 15px;
+            padding: 15px;
+        }
+        h1 {
+            text-align: center;
+        }
+        h3 {
+            text-align: center;
+        }
+        #guess {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            padding: 10px;
+            border: none;
+            outline: none;
+            margin-bottom: 20%;
+            border-radius: 20px;
+        }
+        button {
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, 100%);
+            position: absolute;
+            border-radius: 10px;
+            padding: 5px;
+        }
+        #restart {
+            display: none;
+            top: 70%;
+        }
+        #cong{
+            font-weight: bold;
+            text-align: center;
+        }
+        #result{
+            font-weight: bold;
+            text-align: center;
+        }
+        @media (max-width: 803px) {
+            .box {
+                width: 70%;
+                height: 65%;
+                top: 60%;
+            }
+            #guess {
+                width: 71%;
+                top: 60%;
+                padding: 5px;
+            }
+            button {
+                top: 65%;
+            }
+            #restart {
+                top: 75%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="box">
+            <h1>Word Guessing Game</h1>
+            <h3 id="message">You have only 5 Chances to guess the Word</h3>
+            <input type="text" id="guess" placeholder="Enter the Word" required> <br>
+            <button onclick="makeGuess()">Submit Guess</button>
+            <button id="restart" onclick="restartGame()">Restart Game</button>
+            <p id="printHint">HINT: The word ends with t and it a popular programming language</p>
+            <p id="hint"></p>
+            <p id="result"></p>
+            <p id="cong"></p>
+            <p id="attempts"></p>
+        </div>
+    </div>
+</body>
+<script>
+    const wordToGuess = 'javascript';
+    const hint = "It is a popular programming language and it is heart of Web Dev.";
+    let attempts = 0;
+    const maxAttempts = 5;
+    const hintThresh = 2;
+
+    function makeGuess() {
+        const userGuess = document.getElementById('guess').value.toLowerCase();
+        attempts++;
+        document.getElementById('attempts').innerText = `Attempts Left: ${maxAttempts - attempts}`;
+
+        if (userGuess === wordToGuess) {
+            document.getElementById('result').innerText = "Congratulations You WON🎉🎉🎊🎉";
+            document.getElementById('message').innerText = `You have ${maxAttempts - attempts} guess left`;
+            document.getElementById('message').innerText = "";
+            document.getElementById('hint').innerText = "";
+            document.getElementById('guess').disabled = true;
+            document.querySelector('button').disabled = true;
+            document.getElementById('restart').style.display = 'block';
+            document.getElementById('printHint').style.display = 'none';
+        }
+        else {
+            if (attempts >= hintThresh) {
+                document.getElementById('hint').innerText = "HINT: " + hint;
+            }
+            if (attempts >= maxAttempts) {
+                document.getElementById('result').innerText = "Game OVER!😥😥 The word is " + wordToGuess;
+                document.getElementById('message').innerText = "";
+                document.getElementById('hint').innerText = "";
+                document.getElementById('guess').disabled = true;
+                document.querySelector('button').disabled = true;
+                document.getElementById('restart').style.display = 'block';
+            }
+            else {
+                document.getElementById('result').innerText = "Incorrect Guess❌. Try Again";
+                document.getElementById('message').innerText = `You have ${maxAttempts - attempts} guess left`;
+            }
+        }
+        document.getElementById('guess').value = "";
+    }
+
+    function restartGame(){
+        attempts = 0;
+        document.getElementById('attempts').innerText = "";
+        document.getElementById('result').innerText = "";
+        document.getElementById('hint').innerText = "";
+        document.getElementById('message').innerText = "You have only 5 Chances to guess the Word";
+        document.getElementById('guess').disabled = false;
+        document.querySelector('button').disabled = false;
+        document.getElementById('restart').style.display = 'none';
+        document.getElementById('printHint').style.display = 'block';
+    }
+</script>
+</html>
